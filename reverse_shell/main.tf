@@ -25,13 +25,6 @@ resource "aws_route_table" "r" {
   }
 }
 
-resource "aws_vpc" "main" {
-  cidr_block = "${var.vpc_cidr}"
-  tags = {
-    Name = "tmp_vulnado_rev_shell_vpc"
-  }
-}
-
 resource "aws_subnet" "subnet" {
   vpc_id     = "${aws_vpc.main.id}"
   cidr_block = "${var.subnet_cidr}"
@@ -39,6 +32,14 @@ resource "aws_subnet" "subnet" {
   map_public_ip_on_launch = true
   tags = {
     Name = "tmp_vulnado_rev_shell_subnet"
+  }
+}
+
+/*lines marked as false positive earlier(l28tol33) but now have been moved to new line*/
+resource "aws_vpc" "main" {
+  cidr_block = "${var.vpc_cidr}"
+  tags = {
+    Name = "tmp_vulnado_rev_shell_vpc"
   }
 }
 
@@ -57,14 +58,6 @@ resource "aws_security_group" "sg" {
     to_port     = 22
     cidr_blocks = ["0.0.0.0/0"]
   }
-
-/*lines marked as false positive earlier but now have been moved to new line*/
-resource "aws_vpc" "main" {
-  cidr_block = "${var.vpc_cidr}"
-  tags = {
-    Name = "tmp_vulnado_rev_shell_vpc"
-  }
-}
 
   ingress {
     protocol    = "tcp"
